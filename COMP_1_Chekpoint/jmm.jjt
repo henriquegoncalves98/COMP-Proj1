@@ -93,8 +93,13 @@ void Type(): {} {
 	<INT> | <BOOLEAN> | <IDENTIFIER> | (<INT> <BRACKET_L> <BRACKET_R>)
 }
 
-void Statement(): {} { //TODO
-	<IDENTIFIER>
+void Statement(): {} { 
+	(<CHAV_L> (Statement())* <CHAV_R>)
+	| <IF> <PAR_L> Expression() <PAR_R> Statement() <ELSE> Statement()
+	| <WHILE> <PAR_L> Expression() <PAR_R> Statement()
+	| Expression() <SCOLON>
+	| <IDENTIFIER> <EQ> Expression() <SCOLON>
+	| <IDENTIFIER> <BRACKET_L> Expression() <BRACKET_R> <EQ> Expression() <SCOLON>
 }
 
 void Expression(): {} { //TODO
