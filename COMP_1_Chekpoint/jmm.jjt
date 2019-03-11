@@ -101,7 +101,7 @@ void Expression(): {} { //TODO
 	(Expression() (<AND> | <ADDSUB_OP> | <ARITH_OP>) Expression()) //TODO: FALTAM SINAIS
 	| (Expression() <BRACKET_L> Expression() <BRACKET_R>)
 	| (Expression() <PFINAL> <LENGTH>) 
-	| (Expression() <PFINAL> <IDENTIFIER> <PAR_L> [Expression() (<VIRG> Expression())* <PAR_R>)
+	| (Expression() <PFINAL> <IDENTIFIER> <PAR_L> [Expression() (<VIRG> Expression())*] <PAR_R>)
 	| <INTEGER>
 	| <BOOL> //TODO: Isto pode ficar assim ou tenho de separa em true e false?
 	| <IDENTIFIER>
