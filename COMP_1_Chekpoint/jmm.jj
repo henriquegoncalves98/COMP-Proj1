@@ -51,7 +51,8 @@ TOKEN:{
 	| < PFINAL : "." >
 	| < PUBLIC : "public" >
 	| < RET : "return" >
-	| < RELA_OP: ">" | "<" | "<=" | ">=" | "==" | "!=" >
+	| < RELA_OP : ">" | "<" | "<=" | ">=" | "==" | "!=" >
+	| < LESSTHAN : "<" >
 	| < SCOLON: ";" >
 	| < STATIC : "static" >
 	| < STR : "String" >
@@ -250,8 +251,27 @@ void Statement(): {/*@bgen(jjtree) Statement */
   jjtree.openNodeScope(jjtn000);
 /*@egen*/} {/*@bgen(jjtree) Statement */
         try {
-/*@egen*/ //TODO
-	<IDENTIFIER>/*@bgen(jjtree)*/
+/*@egen*/ 
+	(<CHAV_L> (Statement())* <CHAV_R>)
+	| <IF> <PAR_L> Expression() <PAR_R> Statement() <ELSE> Statement()
+	| <WHILE> <PAR_L> Expression() <PAR_R> Statement()
+	| Expression() <SCOLON>
+	| <IDENTIFIER> <EQ> Expression() <SCOLON>
+	| <IDENTIFIER> <BRACKET_L> Expression() <BRACKET_R> <EQ> Expression() <SCOLON>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
         } finally {
           if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);
@@ -266,8 +286,33 @@ void Expression(): {/*@bgen(jjtree) Expression */
   jjtree.openNodeScope(jjtn000);
 /*@egen*/} {/*@bgen(jjtree) Expression */
         try {
-/*@egen*/ //TODO
-	<IDENTIFIER>/*@bgen(jjtree)*/
+/*@egen*/ 
+	(Expression() (<AND> | <LESSTHAN> | <ADDSUB_OP> | <ARITH_OP>) Expression())
+	| (Expression() <BRACKET_L> Expression() <BRACKET_R>)
+	| (Expression() <PFINAL> <LENGTH>) 
+	| (Expression() <PFINAL> <IDENTIFIER> <PAR_L> [Expression() (<VIRG> Expression())*] <PAR_R>)
+	| <INTEGER>
+	| <BOOL> 
+	| <IDENTIFIER>
+	| <THIS>
+	| <NEW> <INT> <BRACKET_L> Expression() <BRACKET_R>
+	| <NEW> <IDENTIFIER> <PAR_L> <PAR_R>
+	| <NOT> Expression()
+	| <PAR_L> Expression() <PAR_R>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
         } finally {
           if (jjtc000) {
             jjtree.closeNodeScope(jjtn000, true);

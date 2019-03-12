@@ -47,7 +47,8 @@ TOKEN:{
 	| < PFINAL : "." >
 	| < PUBLIC : "public" >
 	| < RET : "return" >
-	| < RELA_OP: ">" | "<" | "<=" | ">=" | "==" | "!=" >
+	| < RELA_OP : ">" | "<" | "<=" | ">=" | "==" | "!=" >
+	| < LESSTHAN : "<" >
 	| < SCOLON: ";" >
 	| < STATIC : "static" >
 	| < STR : "String" >
@@ -102,13 +103,13 @@ void Statement(): {} {
 	| <IDENTIFIER> <BRACKET_L> Expression() <BRACKET_R> <EQ> Expression() <SCOLON>
 }
 
-void Expression(): {} { //TODO
-	(Expression() (<AND> | <ADDSUB_OP> | <ARITH_OP>) Expression()) //TODO: FALTAM SINAIS
+void Expression(): {} { 
+	(Expression() (<AND> | <LESSTHAN> | <ADDSUB_OP> | <ARITH_OP>) Expression())
 	| (Expression() <BRACKET_L> Expression() <BRACKET_R>)
 	| (Expression() <PFINAL> <LENGTH>) 
 	| (Expression() <PFINAL> <IDENTIFIER> <PAR_L> [Expression() (<VIRG> Expression())*] <PAR_R>)
 	| <INTEGER>
-	| <BOOL> //TODO: Isto pode ficar assim ou tenho de separa em true e false?
+	| <BOOL> 
 	| <IDENTIFIER>
 	| <THIS>
 	| <NEW> <INT> <BRACKET_L> Expression() <BRACKET_R>
