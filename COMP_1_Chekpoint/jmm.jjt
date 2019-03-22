@@ -1,5 +1,5 @@
 options {
- LOOKAHEAD = 2;
+ LOOKAHEAD = 1;
 }
 
 PARSER_BEGIN(Jmm)
@@ -23,8 +23,6 @@ TOKEN:{
 	| < ADDSUB_OP: "+" | "-">
 	| < ARITH_OP: "*" | "/" >
 	| < AND : "&&" >
-	| < OR : "||" >
-    | < BITWISE_OP: "&" | "|" | "^" >
 	| < BRACKET_R: "]" >
 	| < BRACKET_L: "[" >
 	| < BOOL: "true" | "false" >
@@ -47,7 +45,6 @@ TOKEN:{
 	| < PFINAL : "." >
 	| < PUBLIC : "public" >
 	| < RET : "return" >
-	| < RELA_OP : ">" | "<" | "<=" | ">=" | "==" | "!=" >
 	| < LESSTHAN : "<" >
 	| < SCOLON: ";" >
 	| < STATIC : "static" >
@@ -68,8 +65,12 @@ SimpleNode Program(): {} {
 void ClassDeclaration(): {} {
 	<CLASS> <IDENTIFIER> [<EXT> <IDENTIFIER>] <CHAV_L>
 	(VarDeclaration())*
-	(MainDeclaration() | MethodDeclaration())*
+	AuxClassDeclaration()
 	<CHAV_R>
+}
+
+void AuxClassDeclaration() #void: {} {
+	( <PUBLIC> (MainDeclaration() | MethodDeclaration()) )*
 }
 
 void VarDeclaration(): {} {
@@ -77,43 +78,87 @@ void VarDeclaration(): {} {
 }
 
 void MainDeclaration(): {} {
-	<PUBLIC> <STATIC> <VOID> <MAIN> <PAR_L> 
+	<STATIC> <VOID> <MAIN> <PAR_L> 
 	<STR> <BRACKET_L> <BRACKET_R> <IDENTIFIER> <PAR_R>
-	<CHAV_L> (VarDeclaration())*
+	<CHAV_L> (LOOKAHEAD(2) VarDeclaration())*
 	(Statement())* <CHAV_R>
 }
 
 void MethodDeclaration(): {} {
-	<PUBLIC> Type() <IDENTIFIER> <PAR_L>
+	Type() <IDENTIFIER> <PAR_L>
 	[Type() <IDENTIFIER> (<VIRG> Type() <IDENTIFIER>)*] <PAR_R>
-	<CHAV_L> (VarDeclaration())* (Statement())* 
+	<CHAV_L> (LOOKAHEAD(2) VarDeclaration())* (Statement())* 
 	<RET> Expression() <SCOLON> <CHAV_R>
 }
 
 void Type(): {} {
-	<INT> | <BOOLEAN> | <IDENTIFIER> | (<INT> <BRACKET_L> <BRACKET_R>)
+	(<INT> (<BRACKET_L> <BRACKET_R>)?)| <BOOLEAN> | <IDENTIFIER>
 }
 
 void Statement(): {} { 
 	(<CHAV_L> (Statement())* <CHAV_R>)
 	| <IF> <PAR_L> Expression() <PAR_R> Statement() <ELSE> Statement()
 	| <WHILE> <PAR_L> Expression() <PAR_R> Statement()
+	| (ExpressionAux() #Expression) <SCOLON>
+	| <IDENTIFIER> (<BRACKET_L> Expression() <BRACKET_R>)? ( StatementAux() | (ExpressionRecursive2() <SCOLON>))
+	/*
 	| Expression() <SCOLON>
-	| <IDENTIFIER> <EQ> Expression() <SCOLON>
-	| <IDENTIFIER> <BRACKET_L> Expression() <BRACKET_R> <EQ> Expression() <SCOLON>
+	| <IDENTIFIER> StatementAux()*/
+}
+
+void StatementAux() #void: {} {
+	<EQ> Expression() <SCOLON>
 }
 
 void Expression(): {} { 
-	(Expression() (<AND> | <LESSTHAN> | <ADDSUB_OP> | <ARITH_OP>) Expression())
-	| (Expression() <BRACKET_L> Expression() <BRACKET_R>)
-	| (Expression() <PFINAL> <LENGTH>) 
-	| (Expression() <PFINAL> <IDENTIFIER> <PAR_L> [Expression() (<VIRG> Expression())*] <PAR_R>)
-	| <INTEGER>
-	| <BOOL> 
-	| <IDENTIFIER>
-	| <THIS>
-	| <NEW> <INT> <BRACKET_L> Expression() <BRACKET_R>
-	| <NEW> <IDENTIFIER> <PAR_L> <PAR_R>
-	| <NOT> Expression()
-	| <PAR_L> Expression() <PAR_R>
+	<IDENTIFIER> ExpressionRecursive()
+	| ExpressionAux()
+}
+
+void ExpressionAux() #void: {} { 
+	(
+		<INTEGER>
+		| <BOOL> 
+		| <THIS>
+		| <NEW> ExpressionNew()
+		| <NOT> Expression()
+		| <PAR_L> Expression() <PAR_R>
+	) ExpressionRecursive()
+}
+
+void ExpressionNew() #void: {} { 
+	<INT> <BRACKET_L> Expression() <BRACKET_R>
+	| <IDENTIFIER> <PAR_L> <PAR_R>
 }	
+
+void ExpressionRecursive() #void: {} { 
+	ExpressionRecursiveAux()
+	| Empty()
+}
+
+void ExpressionRecursiveAux() #Expression: {} {
+	(
+		(<AND> | <LESSTHAN> | <ADDSUB_OP> | <ARITH_OP>) Expression()
+		| <BRACKET_L> Expression() <BRACKET_R>
+		| <PFINAL> (<LENGTH> | <IDENTIFIER> <PAR_L> [Expression() (<VIRG> Expression())*] <PAR_R>)
+	) ExpressionRecursive()
+}
+
+/* This second recursive functions are helpers for the statement non terminal symbol */
+void ExpressionRecursive2() #void: {} { 
+	ExpressionRecursiveAux2()
+	| Empty()
+}
+
+void ExpressionRecursiveAux2() #Expression: {} {
+	(
+		(<AND> | <LESSTHAN> | <ADDSUB_OP> | <ARITH_OP>) Expression()
+		| <PFINAL> (<LENGTH> | <IDENTIFIER> <PAR_L> [Expression() (<VIRG> Expression())*] <PAR_R>)
+	) ExpressionRecursive()
+}
+
+/* Epsilon terminal expressed as the non-terminal symbol empty*/
+void Empty() #void: {}
+{
+	{}
+}

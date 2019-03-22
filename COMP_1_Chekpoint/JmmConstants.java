@@ -17,71 +17,67 @@ public interface JmmConstants {
   /** RegularExpression Id. */
   int AND = 7;
   /** RegularExpression Id. */
-  int OR = 8;
+  int BRACKET_R = 8;
   /** RegularExpression Id. */
-  int BITWISE_OP = 9;
+  int BRACKET_L = 9;
   /** RegularExpression Id. */
-  int BRACKET_R = 10;
+  int BOOL = 10;
   /** RegularExpression Id. */
-  int BRACKET_L = 11;
+  int BOOLEAN = 11;
   /** RegularExpression Id. */
-  int BOOL = 12;
+  int CLASS = 12;
   /** RegularExpression Id. */
-  int BOOLEAN = 13;
+  int CHAV_R = 13;
   /** RegularExpression Id. */
-  int CLASS = 14;
+  int CHAV_L = 14;
   /** RegularExpression Id. */
-  int CHAV_R = 15;
+  int EQ = 15;
   /** RegularExpression Id. */
-  int CHAV_L = 16;
+  int EXT = 16;
   /** RegularExpression Id. */
-  int EQ = 17;
+  int ELSE = 17;
   /** RegularExpression Id. */
-  int EXT = 18;
+  int IF = 18;
   /** RegularExpression Id. */
-  int ELSE = 19;
+  int INT = 19;
   /** RegularExpression Id. */
-  int IF = 20;
+  int LF = 20;
   /** RegularExpression Id. */
-  int INT = 21;
+  int LENGTH = 21;
   /** RegularExpression Id. */
-  int LF = 22;
+  int MAIN = 22;
   /** RegularExpression Id. */
-  int LENGTH = 23;
+  int NEW = 23;
   /** RegularExpression Id. */
-  int MAIN = 24;
+  int NOT = 24;
   /** RegularExpression Id. */
-  int NEW = 25;
+  int PAR_R = 25;
   /** RegularExpression Id. */
-  int NOT = 26;
+  int PAR_L = 26;
   /** RegularExpression Id. */
-  int PAR_R = 27;
+  int PFINAL = 27;
   /** RegularExpression Id. */
-  int PAR_L = 28;
+  int PUBLIC = 28;
   /** RegularExpression Id. */
-  int PFINAL = 29;
+  int RET = 29;
   /** RegularExpression Id. */
-  int PUBLIC = 30;
+  int LESSTHAN = 30;
   /** RegularExpression Id. */
-  int RET = 31;
+  int SCOLON = 31;
   /** RegularExpression Id. */
-  int RELA_OP = 32;
+  int STATIC = 32;
   /** RegularExpression Id. */
-  int SCOLON = 33;
+  int STR = 33;
   /** RegularExpression Id. */
-  int STATIC = 34;
+  int THIS = 34;
   /** RegularExpression Id. */
-  int STR = 35;
+  int VIRG = 35;
   /** RegularExpression Id. */
-  int THIS = 36;
+  int VOID = 36;
   /** RegularExpression Id. */
-  int VIRG = 37;
+  int WHILE = 37;
   /** RegularExpression Id. */
-  int VOID = 38;
-  /** RegularExpression Id. */
-  int WHILE = 39;
-  /** RegularExpression Id. */
-  int IDENTIFIER = 40;
+  int IDENTIFIER = 38;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -96,8 +92,6 @@ public interface JmmConstants {
     "<ADDSUB_OP>",
     "<ARITH_OP>",
     "\"&&\"",
-    "\"||\"",
-    "<BITWISE_OP>",
     "\"]\"",
     "\"[\"",
     "<BOOL>",
@@ -120,7 +114,7 @@ public interface JmmConstants {
     "\".\"",
     "\"public\"",
     "\"return\"",
-    "<RELA_OP>",
+    "\"<\"",
     "\";\"",
     "\"static\"",
     "\"String\"",

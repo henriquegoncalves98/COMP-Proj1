@@ -3,17 +3,19 @@ public interface JmmTreeConstants
 {
   public int JJTPROGRAM = 0;
   public int JJTCLASSDECLARATION = 1;
-  public int JJTVARDECLARATION = 2;
-  public int JJTMAINDECLARATION = 3;
-  public int JJTMETHODDECLARATION = 4;
-  public int JJTTYPE = 5;
-  public int JJTSTATEMENT = 6;
-  public int JJTEXPRESSION = 7;
+  public int JJTVOID = 2;
+  public int JJTVARDECLARATION = 3;
+  public int JJTMAINDECLARATION = 4;
+  public int JJTMETHODDECLARATION = 5;
+  public int JJTTYPE = 6;
+  public int JJTSTATEMENT = 7;
+  public int JJTEXPRESSION = 8;
 
 
   public String[] jjtNodeName = {
     "Program",
     "ClassDeclaration",
+    "void",
     "VarDeclaration",
     "MainDeclaration",
     "MethodDeclaration",
@@ -22,4 +24,4 @@ public interface JmmTreeConstants
     "Expression",
   };
 }
-/* JavaCC - OriginalChecksum=6455fcc458fae253983b20c07efd54f9 (do not edit this line) */
+/* JavaCC - OriginalChecksum=4c28ab0be1c2cf598c43dba31f68e609 (do not edit this line) */
