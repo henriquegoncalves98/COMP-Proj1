@@ -3,25 +3,45 @@ public interface JmmTreeConstants
 {
   public int JJTPROGRAM = 0;
   public int JJTCLASSDECLARATION = 1;
-  public int JJTVOID = 2;
-  public int JJTVARDECLARATION = 3;
-  public int JJTMAINDECLARATION = 4;
-  public int JJTMETHODDECLARATION = 5;
-  public int JJTTYPE = 6;
-  public int JJTSTATEMENT = 7;
-  public int JJTEXPRESSION = 8;
+  public int JJTEXT = 2;
+  public int JJTVOID = 3;
+  public int JJTVARDECLARATION = 4;
+  public int JJTMAINDECLARATION = 5;
+  public int JJTMETHODDECLARATION = 6;
+  public int JJTIFELSESTATEMENT = 7;
+  public int JJTWHILESTATEMENT = 8;
+  public int JJTASSING = 9;
+  public int JJTAND = 10;
+  public int JJTLESSTHAN = 11;
+  public int JJTADDITIVE = 12;
+  public int JJTMULTIPLICATIVE = 13;
+  public int JJTEXPRESSION = 14;
+  public int JJTACCESSEXPR = 15;
+  public int JJTID = 16;
+  public int JJTINTEGER = 17;
+  public int JJTBOOL = 18;
 
 
   public String[] jjtNodeName = {
     "Program",
     "ClassDeclaration",
+    "EXT",
     "void",
     "VarDeclaration",
     "MainDeclaration",
     "MethodDeclaration",
-    "Type",
-    "Statement",
+    "IfElseStatement",
+    "WhileStatement",
+    "Assing",
+    "AND",
+    "LessThan",
+    "Additive",
+    "Multiplicative",
     "Expression",
+    "AccessExpr",
+    "ID",
+    "Integer",
+    "Bool",
   };
 }
-/* JavaCC - OriginalChecksum=4c28ab0be1c2cf598c43dba31f68e609 (do not edit this line) */
+/* JavaCC - OriginalChecksum=d1ca61240d4c3b0d4872341fe317a584 (do not edit this line) */
