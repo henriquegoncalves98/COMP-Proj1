@@ -9,39 +9,37 @@ public interface JmmConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int INTEGER = 6;
+  int INTEGER = 7;
   /** RegularExpression Id. */
-  int ADDSUB_OP = 7;
+  int ADDSUB_OP = 8;
   /** RegularExpression Id. */
-  int ARITH_OP = 8;
+  int ARITH_OP = 9;
   /** RegularExpression Id. */
-  int AND = 9;
+  int AND = 10;
   /** RegularExpression Id. */
-  int BRACKET_R = 10;
+  int BRACKET_R = 11;
   /** RegularExpression Id. */
-  int BRACKET_L = 11;
+  int BRACKET_L = 12;
   /** RegularExpression Id. */
-  int BOOL = 12;
+  int BOOL = 13;
   /** RegularExpression Id. */
-  int BOOLEAN = 13;
+  int BOOLEAN = 14;
   /** RegularExpression Id. */
-  int CLASS = 14;
+  int CLASS = 15;
   /** RegularExpression Id. */
-  int CHAV_R = 15;
+  int CHAV_R = 16;
   /** RegularExpression Id. */
-  int CHAV_L = 16;
+  int CHAV_L = 17;
   /** RegularExpression Id. */
-  int EQ = 17;
+  int EQ = 18;
   /** RegularExpression Id. */
-  int EXT = 18;
+  int EXT = 19;
   /** RegularExpression Id. */
-  int ELSE = 19;
+  int ELSE = 20;
   /** RegularExpression Id. */
-  int IF = 20;
+  int IF = 21;
   /** RegularExpression Id. */
-  int INT = 21;
-  /** RegularExpression Id. */
-  int LF = 22;
+  int INT = 22;
   /** RegularExpression Id. */
   int LENGTH = 23;
   /** RegularExpression Id. */
@@ -85,11 +83,12 @@ public interface JmmConstants {
   /** Literal token values. */
   String[] tokenImage = {
     "<EOF>",
-    "\" \"",
-    "\"\\r\"",
     "\"\\t\"",
-    "<token of kind 4>",
+    "\"\\r\"",
+    "\"\\n\"",
+    "\" \"",
     "<token of kind 5>",
+    "<token of kind 6>",
     "<INTEGER>",
     "<ADDSUB_OP>",
     "<ARITH_OP>",
@@ -106,7 +105,6 @@ public interface JmmConstants {
     "\"else\"",
     "\"if\"",
     "\"int\"",
-    "\"\\n\"",
     "\"length\"",
     "\"main\"",
     "\"new\"",
