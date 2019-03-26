@@ -6,12 +6,30 @@
 
 PARSER_BEGIN(Jmm)
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
+import java.util.*;
+
 public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants/*@egen*/ {/*@bgen(jjtree)*/
   protected static JJTJmmState jjtree = new JJTJmmState();
 
 /*@egen*/
-	public static void main(String args[]) throws ParseException {
-		Jmm myJmm = new Jmm(System.in);
+	public static void main(String args[]) throws ParseException, IOException {
+
+		InputStream f = null;
+
+		try {
+            f = new FileInputStream("teste");
+        }catch(FileNotFoundException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
+		Jmm myJmm = new Jmm(f);
 		SimpleNode root = myJmm.Program(); // returns reference to root node
 
 		root.dump("");
@@ -19,9 +37,12 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants/*@egen*/ {/*@bgen(j
 }
 
 PARSER_END(Jmm)
-SKIP:{
-	" " | "\r" | "\t" 
-	//|"\n"
+SKIP:
+{
+	"\t" 
+	| "\r"
+	| "\n"
+	| " " 
 	| <"//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
 	| <"/*" (~["*"])* "*" (~["/"] (~["*"])* "*")* "/">
 }
@@ -42,7 +63,7 @@ TOKEN:{
 	| < ELSE : "else" >
 	| < IF : "if" >
 	| < INT: "int" >
-	| < LF: "\n" >
+	//| < LF: "\n" >
 	| < LENGTH : "length" >
 	| < MAIN : "main" >
 	| < NEW : "new" >
@@ -70,11 +91,11 @@ SimpleNode Program(): {/*@bgen(jjtree) Program */
 /*@egen*/} {/*@bgen(jjtree) Program */
         try {
 /*@egen*/
-	ClassDeclaration() <LF>/*@bgen(jjtree)*/
-                                {
-                                  jjtree.closeNodeScope(jjtn000, true);
-                                  jjtc000 = false;
-                                }
+	ClassDeclaration()/*@bgen(jjtree)*/
+                           {
+                             jjtree.closeNodeScope(jjtn000, true);
+                             jjtc000 = false;
+                           }
 /*@egen*/ {
 		return jjtn000;
 	}/*@bgen(jjtree)*/
