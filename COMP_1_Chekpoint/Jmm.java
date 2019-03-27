@@ -183,13 +183,14 @@ if (jjtc000) {
   }
 
   static final public void VarDeclaration() throws ParseException {/*@bgen(jjtree) VarDeclaration */
-  ASTVarDeclaration jjtn000 = new ASTVarDeclaration(JJTVARDECLARATION);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
+                        ASTVarDeclaration jjtn000 = new ASTVarDeclaration(JJTVARDECLARATION);
+                        boolean jjtc000 = true;
+                        jjtree.openNodeScope(jjtn000);Token t; String type;
     try {
       try {
-        Type();
-        jj_consume_token(IDENTIFIER);
+        type = Type();
+        t = jj_consume_token(IDENTIFIER);
+jjtn000.setName(t.image); jjtn000.setType(type);
         jj_consume_token(SCOLON);
       } catch (ParseException e) {
 System.out.println("Var declaration: " + e.getMessage());
@@ -284,12 +285,13 @@ if (jjtc000) {
   }
 
   static final public void MethodDeclaration() throws ParseException {/*@bgen(jjtree) MethodDeclaration */
-  ASTMethodDeclaration jjtn000 = new ASTMethodDeclaration(JJTMETHODDECLARATION);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
+                           ASTMethodDeclaration jjtn000 = new ASTMethodDeclaration(JJTMETHODDECLARATION);
+                           boolean jjtc000 = true;
+                           jjtree.openNodeScope(jjtn000);Token t;
     try {
       Type();
-      jj_consume_token(IDENTIFIER);
+      t = jj_consume_token(IDENTIFIER);
+jjtn000.setName(t.image);
       jj_consume_token(PAR_L);
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case BOOLEAN:
@@ -376,10 +378,10 @@ if (jjtc000) {
     }
   }
 
-  static final public void Type() throws ParseException {
+  static final public String Type() throws ParseException {Token type;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
     case INT:{
-      jj_consume_token(INT);
+      type = jj_consume_token(INT);
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case BRACKET_L:{
         jj_consume_token(BRACKET_L);
@@ -393,11 +395,11 @@ if (jjtc000) {
       break;
       }
     case BOOLEAN:{
-      jj_consume_token(BOOLEAN);
+      type = jj_consume_token(BOOLEAN);
       break;
       }
     case IDENTIFIER:{
-      jj_consume_token(IDENTIFIER);
+      type = jj_consume_token(IDENTIFIER);
       break;
       }
     default:
@@ -405,6 +407,8 @@ if (jjtc000) {
       jj_consume_token(-1);
       throw new ParseException();
     }
+{if ("" != null) return type.image;}
+    throw new Error("Missing return statement in function");
   }
 
   static final public void Statement() throws ParseException {
@@ -1054,23 +1058,6 @@ void ExpressionRecursiveAux2() #Expression: {} {
     finally { jj_save(2, xla); }
   }
 
-  static private boolean jj_3R_43()
- {
-    if (jj_scan_token(INT)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_39()
- {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3R_43()) {
-    jj_scanpos = xsp;
-    if (jj_3R_44()) return true;
-    }
-    return false;
-  }
-
   static private boolean jj_3R_36()
  {
     if (jj_3R_42()) return true;
@@ -1211,6 +1198,12 @@ void ExpressionRecursiveAux2() #Expression: {} {
     return false;
   }
 
+  static private boolean jj_3R_22()
+ {
+    if (jj_scan_token(BRACKET_L)) return true;
+    return false;
+  }
+
   static private boolean jj_3R_24()
  {
     if (jj_scan_token(LESSTHAN)) return true;
@@ -1221,12 +1214,6 @@ void ExpressionRecursiveAux2() #Expression: {} {
  {
     if (jj_3R_16()) return true;
     if (jj_scan_token(SCOLON)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_22()
- {
-    if (jj_scan_token(BRACKET_L)) return true;
     return false;
   }
 
@@ -1288,12 +1275,6 @@ void ExpressionRecursiveAux2() #Expression: {} {
     return false;
   }
 
-  static private boolean jj_3_1()
- {
-    if (jj_3R_15()) return true;
-    return false;
-  }
-
   static private boolean jj_3R_40()
  {
     if (jj_scan_token(IDENTIFIER)) return true;
@@ -1303,6 +1284,12 @@ void ExpressionRecursiveAux2() #Expression: {} {
   static private boolean jj_3R_37()
  {
     if (jj_scan_token(BRACKET_L)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_1()
+ {
+    if (jj_3R_15()) return true;
     return false;
   }
 
@@ -1319,6 +1306,23 @@ void ExpressionRecursiveAux2() #Expression: {} {
     while (true) {
       xsp = jj_scanpos;
       if (jj_3R_26()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  static private boolean jj_3R_43()
+ {
+    if (jj_scan_token(INT)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_39()
+ {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_43()) {
+    jj_scanpos = xsp;
+    if (jj_3R_44()) return true;
     }
     return false;
   }
