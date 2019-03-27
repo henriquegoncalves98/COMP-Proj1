@@ -122,8 +122,8 @@ if (jjtc000) {
     }
   }
 
-  static final public void ExtendClassDeclaration() throws ParseException {/*@bgen(jjtree) EXT */
-  ASTEXT jjtn000 = new ASTEXT(JJTEXT);
+  static final public void ExtendClassDeclaration() throws ParseException {/*@bgen(jjtree) Extend */
+  ASTExtend jjtn000 = new ASTExtend(JJTEXTEND);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {

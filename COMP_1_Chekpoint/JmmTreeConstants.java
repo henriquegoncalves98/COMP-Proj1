@@ -3,7 +3,7 @@ public interface JmmTreeConstants
 {
   public int JJTPROGRAM = 0;
   public int JJTCLASSDECLARATION = 1;
-  public int JJTEXT = 2;
+  public int JJTEXTEND = 2;
   public int JJTVOID = 3;
   public int JJTVARDECLARATION = 4;
   public int JJTMAINDECLARATION = 5;
@@ -25,7 +25,7 @@ public interface JmmTreeConstants
   public String[] jjtNodeName = {
     "Program",
     "ClassDeclaration",
-    "EXT",
+    "Extend",
     "void",
     "VarDeclaration",
     "MainDeclaration",
@@ -44,4 +44,4 @@ public interface JmmTreeConstants
     "Bool",
   };
 }
-/* JavaCC - OriginalChecksum=d1ca61240d4c3b0d4872341fe317a584 (do not edit this line) */
+/* JavaCC - OriginalChecksum=bd7cac547bd59fa793f90165d66547a8 (do not edit this line) */

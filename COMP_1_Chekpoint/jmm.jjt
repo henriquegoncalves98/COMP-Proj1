@@ -104,7 +104,7 @@ void ClassDeclaration(): { Token t;} {
 	<CHAV_R>
 }
 
-void ExtendClassDeclaration() #EXT: {} {
+void ExtendClassDeclaration() #Extend: {} {
 	<EXT> ID()
 }
 

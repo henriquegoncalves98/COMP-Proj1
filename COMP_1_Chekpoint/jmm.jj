@@ -165,11 +165,11 @@ void ClassDeclaration(): {/*@bgen(jjtree) ClassDeclaration */
 /*@egen*/
 }
 
-void ExtendClassDeclaration()     : {/*@bgen(jjtree) EXT */
-  ASTEXT jjtn000 = new ASTEXT(JJTEXT);
+void ExtendClassDeclaration()        : {/*@bgen(jjtree) Extend */
+  ASTExtend jjtn000 = new ASTExtend(JJTEXTEND);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
-/*@egen*/} {/*@bgen(jjtree) EXT */
+/*@egen*/} {/*@bgen(jjtree) Extend */
         try {
 /*@egen*/
 	<EXT> ID()/*@bgen(jjtree)*/

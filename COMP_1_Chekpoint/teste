@@ -1,5 +1,6 @@
 class Fac {
  public int ComputeFac(int num){
+     while(num_aux < 1)
  int num_aux;  
  if (num < 1)
  num_aux = 1;
