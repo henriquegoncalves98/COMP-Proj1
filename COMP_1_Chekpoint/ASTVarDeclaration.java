@@ -2,12 +2,39 @@
 /* JavaCCOptions:MULTI=true,NODE_USES_PARSER=false,VISITOR=false,TRACK_TOKENS=false,NODE_PREFIX=AST,NODE_EXTENDS=,NODE_FACTORY=,SUPPORT_CLASS_VISIBILITY_PUBLIC=true */
 public
 class ASTVarDeclaration extends SimpleNode {
+  private String name;
+  private String type;
+
   public ASTVarDeclaration(int id) {
     super(id);
   }
 
   public ASTVarDeclaration(Jmm p, int id) {
     super(p, id);
+  }
+
+  /**
+  * Set the name.
+  * @param n the name
+  */
+  public void setName(String n) {
+    name = n;
+  }
+
+  /**
+  * Set the name.
+  * @param n the name
+  */
+  public void setType(String t) {
+    type = t;
+  }
+
+  /**
+   * {@inheritDoc}
+   * @see org.javacc.examples.jjtree.eg2.SimpleNode#toString()
+   */
+  public String toString() {
+    return JmmTreeConstants.jjtNodeName[id] + " " + type + "(" + name + ")";
   }
 
 }

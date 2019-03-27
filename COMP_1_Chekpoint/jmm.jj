@@ -222,15 +222,24 @@ void AuxClassDeclaration()      : {} {
 	( <PUBLIC> (MainDeclaration() | MethodDeclaration()) )*
 }
 
+<<<<<<< HEAD
 void VarDeclaration(): {/*@bgen(jjtree) VarDeclaration */
   ASTVarDeclaration jjtn000 = new ASTVarDeclaration(JJTVARDECLARATION);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/} {/*@bgen(jjtree) VarDeclaration */
         try {
+=======
+void VarDeclaration(): {/*@bgen(jjtree) VarDeclaration */
+                        ASTVarDeclaration jjtn000 = new ASTVarDeclaration(JJTVARDECLARATION);
+                        boolean jjtc000 = true;
+                        jjtree.openNodeScope(jjtn000);
+/*@egen*/Token t; String type;} {/*@bgen(jjtree) VarDeclaration */
+        try {
+>>>>>>> b3613ccd81b3dacaa7e7a1a4a550af0a8f4df90a
 /*@egen*/
 	try{
-	Type() <IDENTIFIER> <SCOLON>
+	type=Type() t=<IDENTIFIER>{ jjtn000.setName(t.image); jjtn000.setType(type); } <SCOLON>
 	} catch (ParseException e){
 		System.out.println("Var declaration: " + e.getMessage());
 	}/*@bgen(jjtree)*/
@@ -289,14 +298,23 @@ void MainDeclaration(): {/*@bgen(jjtree) MainDeclaration */
 /*@egen*/
 }
 
+<<<<<<< HEAD
 void MethodDeclaration(): {/*@bgen(jjtree) MethodDeclaration */
   ASTMethodDeclaration jjtn000 = new ASTMethodDeclaration(JJTMETHODDECLARATION);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/} {/*@bgen(jjtree) MethodDeclaration */
         try {
+=======
+void MethodDeclaration(): {/*@bgen(jjtree) MethodDeclaration */
+                           ASTMethodDeclaration jjtn000 = new ASTMethodDeclaration(JJTMETHODDECLARATION);
+                           boolean jjtc000 = true;
+                           jjtree.openNodeScope(jjtn000);
+/*@egen*/Token t;} {/*@bgen(jjtree) MethodDeclaration */
+        try {
+>>>>>>> b3613ccd81b3dacaa7e7a1a4a550af0a8f4df90a
 /*@egen*/
-	Type() <IDENTIFIER> <PAR_L>
+	Type() t=<IDENTIFIER>{ jjtn000.setName(t.image); } <PAR_L>
 	[Type() <IDENTIFIER> (<VIRG> Type() <IDENTIFIER>)*] <PAR_R>
 	<CHAV_L> (LOOKAHEAD(2) VarDeclaration())* (Statement())* 
 	<RET> Expression() <SCOLON> <CHAV_R>/*@bgen(jjtree)*/
@@ -322,8 +340,9 @@ void MethodDeclaration(): {/*@bgen(jjtree) MethodDeclaration */
 /*@egen*/
 }
 
-void Type()      : {} {
-	(<INT> (<BRACKET_L> <BRACKET_R>)?)| <BOOLEAN> | <IDENTIFIER>
+String Type()      : {Token type;} {
+	((type=<INT> (<BRACKET_L> <BRACKET_R>)?)| type=<BOOLEAN> | type=<IDENTIFIER>)
+	{ return type.image; }
 }
 
 void Statement()      : {Token t;} { 
