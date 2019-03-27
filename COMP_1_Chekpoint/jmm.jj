@@ -24,14 +24,19 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants/*@egen*/ {/*@bgen(j
 		try {
             f = new FileInputStream("teste");
         }catch(FileNotFoundException e) {
+			System.out.println("Error opening file:");
             System.out.println(e.getMessage());
-            return;
+            System.exit(1);
         }
 
-		Jmm myJmm = new Jmm(f);
-		SimpleNode root = myJmm.Program(); // returns reference to root node
-
-		root.dump("");
+		//try{
+			Jmm myJmm = new Jmm(f);
+			SimpleNode root = myJmm.Program(); // returns reference to root node
+		
+			root.dump("");
+		//} catch (Exception e){
+	//		System.out.println("Sorry, we were not able to run your code, because we found one or more error trying to parse it.");
+	//	}
 	}
 }
 
@@ -127,7 +132,11 @@ void ClassDeclaration(): {/*@bgen(jjtree) ClassDeclaration */
 /*@egen*/} {/*@bgen(jjtree) ClassDeclaration */
         try {
 /*@egen*/
-	<CLASS> <IDENTIFIER> [<EXT> <IDENTIFIER>] <CHAV_L>
+	try{
+		<CLASS> <IDENTIFIER> [<EXT> <IDENTIFIER>] <CHAV_L>
+	} catch (ParseException e){
+		System.out.println("Class declaration: " + e.getMessage());
+	}
 	(VarDeclaration())*
 	AuxClassDeclaration()
 	<CHAV_R>/*@bgen(jjtree)*/
@@ -164,7 +173,11 @@ void VarDeclaration(): {/*@bgen(jjtree) VarDeclaration */
 /*@egen*/} {/*@bgen(jjtree) VarDeclaration */
         try {
 /*@egen*/
-	Type() <IDENTIFIER> <SCOLON>/*@bgen(jjtree)*/
+	try{
+	Type() <IDENTIFIER> <SCOLON>
+	} catch (ParseException e){
+		System.out.println("Var declaration: " + e.getMessage());
+	}/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);

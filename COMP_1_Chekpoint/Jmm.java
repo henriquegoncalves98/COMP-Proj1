@@ -16,14 +16,19 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@b
                 try {
             f = new FileInputStream("teste");
         }catch(FileNotFoundException e) {
+                        System.out.println("Error opening file:");
             System.out.println(e.getMessage());
-            return;
+            System.exit(1);
         }
 
-                Jmm myJmm = new Jmm(f);
-                SimpleNode root = myJmm.Program(); // returns reference to root node
+                //try{
+                        Jmm myJmm = new Jmm(f);
+                        SimpleNode root = myJmm.Program(); // returns reference to root node
 
-                root.dump("");
+                        root.dump("");
+                //} catch (Exception e){
+        //		System.out.println("Sorry, we were not able to run your code, because we found one or more error trying to parse it.");
+        //	}
         }
 
   static final public SimpleNode Program() throws ParseException {/*@bgen(jjtree) Program */
@@ -62,19 +67,23 @@ if (jjtc000) {
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      jj_consume_token(CLASS);
-      jj_consume_token(IDENTIFIER);
-      switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-      case EXT:{
-        jj_consume_token(EXT);
+      try {
+        jj_consume_token(CLASS);
         jj_consume_token(IDENTIFIER);
-        break;
+        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+        case EXT:{
+          jj_consume_token(EXT);
+          jj_consume_token(IDENTIFIER);
+          break;
+          }
+        default:
+          jj_la1[0] = jj_gen;
+          ;
         }
-      default:
-        jj_la1[0] = jj_gen;
-        ;
+        jj_consume_token(CHAV_L);
+      } catch (ParseException e) {
+System.out.println("Class declaration: " + e.getMessage());
       }
-      jj_consume_token(CHAV_L);
       label_1:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
@@ -150,9 +159,13 @@ if (jjtc000) {
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      Type();
-      jj_consume_token(IDENTIFIER);
-      jj_consume_token(SCOLON);
+      try {
+        Type();
+        jj_consume_token(IDENTIFIER);
+        jj_consume_token(SCOLON);
+      } catch (ParseException e) {
+System.out.println("Var declaration: " + e.getMessage());
+      }
     } catch (Throwable jjte000) {
 if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -915,13 +928,6 @@ if (jjtc000) {
     finally { jj_save(1, xla); }
   }
 
-  static private boolean jj_3R_11()
- {
-    if (jj_3R_12()) return true;
-    if (jj_scan_token(IDENTIFIER)) return true;
-    return false;
-  }
-
   static private boolean jj_3R_13()
  {
     if (jj_scan_token(INT)) return true;
@@ -942,6 +948,13 @@ if (jjtc000) {
     if (jj_scan_token(40)) return true;
     }
     }
+    return false;
+  }
+
+  static private boolean jj_3R_11()
+ {
+    if (jj_3R_12()) return true;
+    if (jj_scan_token(IDENTIFIER)) return true;
     return false;
   }
 
