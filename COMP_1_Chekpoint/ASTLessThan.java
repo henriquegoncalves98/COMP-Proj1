@@ -10,5 +10,14 @@ class ASTLessThan extends SimpleNode {
     super(p, id);
   }
 
+  
+  /**
+  * {@inheritDoc}
+  * @see org.javacc.examples.jjtree.eg2.SimpleNode#toString()
+  */
+  public String toString() {
+    return JmmTreeConstants.jjtNodeName[id] + " '<' ";
+  }
+
 }
 /* JavaCC - OriginalChecksum=9ba8f240fcb8826afc35454c886f9934 (do not edit this line) */

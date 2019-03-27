@@ -91,9 +91,11 @@ SimpleNode Program(): {} {
 	}
 }
 
-void ClassDeclaration(): {} {
+void ClassDeclaration(): { Token t;} {
 	try{
-		<CLASS> <IDENTIFIER> [ExtendClassDeclaration()] <CHAV_L>
+		<CLASS> 
+			t=<IDENTIFIER> { jjtThis.setName(t.image); }
+		[ExtendClassDeclaration()] <CHAV_L>
 	} catch (ParseException e){
 		System.out.println("Class declaration: " + e.getMessage());
 	}
@@ -179,18 +181,18 @@ void LessThanExpression() #void : {}
 }
 
 /** An AddSub Expression. */
-void AddSubExpression() #void : {}
+void AddSubExpression() #void : {Token t;}
 {
   (
-    MultiplicativeExpression() ( (<ADDSUB_OP>) MultiplicativeExpression() )*
+    MultiplicativeExpression() ( (t=<ADDSUB_OP> { jjtThis.setName(t.image); }) MultiplicativeExpression() )*
   ) #Additive(>1)
 }
 
 /** A Multiplicative Expression. */
-void MultiplicativeExpression() #void : {}
+void MultiplicativeExpression() #void : {Token t;}
 {
   (
-    AccessExpression() ( (<ARITH_OP>) AccessExpression() )*
+    AccessExpression() ( (t=<ARITH_OP> { jjtThis.setName(t.image); }) AccessExpression() )*
   ) #Multiplicative(>1)
 }
 
@@ -232,14 +234,17 @@ void ID() :
 {
   t=<IDENTIFIER>
   {
-    //jjtThis.setName(t.image);
+    jjtThis.setName(t.image);
   }
 }
 
 /** An Integer. */
-void Integer() : {}
+void Integer() : {Token t;}
 {
-  <INTEGER>
+  t=<INTEGER>
+  {
+    jjtThis.setName(t.image);
+  }
 }
 
 /** A Boolean. */

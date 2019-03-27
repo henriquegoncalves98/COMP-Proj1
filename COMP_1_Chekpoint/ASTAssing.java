@@ -10,5 +10,13 @@ class ASTAssing extends SimpleNode {
     super(p, id);
   }
 
+  /**
+  * {@inheritDoc}
+  * @see org.javacc.examples.jjtree.eg2.SimpleNode#toString()
+  */
+  public String toString() {
+    return JmmTreeConstants.jjtNodeName[id] + " '=' ";
+  }
+
 }
 /* JavaCC - OriginalChecksum=db084e2929f86b8481b7b0abb0deca47 (do not edit this line) */
