@@ -19,7 +19,7 @@ public class Jmm {
 		InputStream f = null;
 
 		try {
-            f = new FileInputStream("teste");
+            f = new FileInputStream("teste.jmm");
         }catch(FileNotFoundException e) {
 			System.out.println("Error opening file:");
             System.out.println(e.getMessage());
@@ -36,9 +36,21 @@ public class Jmm {
 			System.out.println("Sorry, we were not able to run your code, because we found one or more error trying to parse it.");
 		}
 	}
+
+}
+PARSER_END(Jmm)
+
+JAVACODE
+void error_skipto(int kind) {
+	ParseException e = generateParseException();  // generate the exception object.
+	System.out.println(e.getMessage());  // print the error message
+	Token t;
+	do {
+		t = getNextToken();
+	} while (t.kind != kind);
+
 }
 
-PARSER_END(Jmm)
 SKIP:
 {
 	"\t" 
@@ -65,7 +77,6 @@ TOKEN:{
 	| < ELSE : "else" >
 	| < IF : "if" >
 	| < INT: "int" >
-	//| < LF: "\n" >
 	| < LENGTH : "length" >
 	| < MAIN : "main" >
 	| < NEW : "new" >
@@ -89,7 +100,7 @@ TOKEN:{
 SimpleNode Program(): {} {
 	ClassDeclaration() {
 		return jjtThis;
-	}
+	} <EOF>
 }
 
 void ClassDeclaration(): { Token t;} {
@@ -140,10 +151,15 @@ String Type() #void: {Token type;} {
 	{ return type.image; }
 }
 
-void Statement()#void : {} { 
+void Statement()#void : {Token t;} { 
 	<CHAV_L> (Statement())* <CHAV_R>
 	| (<IF> <PAR_L> Expression() <PAR_R> Statement() <ELSE> Statement())#IfElseStatement
-	| (<WHILE> <PAR_L> Expression() <PAR_R> Statement())#WhileStatement
+	| (<WHILE> try{
+			<PAR_L> Expression() <PAR_R>
+		} catch (ParseException e){
+			error_skipto(PAR_R);
+		}
+		 Statement())#WhileStatement 
 	| LOOKAHEAD(2) Expression() <SCOLON>
 	| (ID() (<BRACKET_L> Expression() <BRACKET_R>)? StatementAux())#Assing(>1)
 	/*

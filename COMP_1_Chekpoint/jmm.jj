@@ -23,7 +23,7 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants/*@egen*/ {/*@bgen(j
 		InputStream f = null;
 
 		try {
-            f = new FileInputStream("teste");
+            f = new FileInputStream("teste.jmm");
         }catch(FileNotFoundException e) {
 			System.out.println("Error opening file:");
             System.out.println(e.getMessage());
@@ -40,9 +40,32 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants/*@egen*/ {/*@bgen(j
 			System.out.println("Sorry, we were not able to run your code, because we found one or more error trying to parse it.");
 		}
 	}
+
+}
+PARSER_END(Jmm)
+
+JAVACODE
+void error_skipto(int kind) {/*@bgen(jjtree) error_skipto */
+     ASTerror_skipto jjtn000 = new ASTerror_skipto(JJTERROR_SKIPTO);
+     boolean jjtc000 = true;
+     jjtree.openNodeScope(jjtn000);
+     try {
+/*@egen*/
+	ParseException e = generateParseException();  // generate the exception object.
+	System.out.println(e.getMessage());  // print the error message
+	Token t;
+	do {
+		t = getNextToken();
+	} while (t.kind != kind);/*@bgen(jjtree)*/
+     } finally {
+       if (jjtc000) {
+         jjtree.closeNodeScope(jjtn000, true);
+       }
+     }
+/*@egen*/
+
 }
 
-PARSER_END(Jmm)
 SKIP:
 {
 	"\t" 
@@ -69,7 +92,6 @@ TOKEN:{
 	| < ELSE : "else" >
 	| < IF : "if" >
 	| < INT: "int" >
-	//| < LF: "\n" >
 	| < LENGTH : "length" >
 	| < MAIN : "main" >
 	| < NEW : "new" >
@@ -97,14 +119,9 @@ SimpleNode Program(): {/*@bgen(jjtree) Program */
 /*@egen*/} {/*@bgen(jjtree) Program */
         try {
 /*@egen*/
-	ClassDeclaration()/*@bgen(jjtree)*/
-                           {
-                             jjtree.closeNodeScope(jjtn000, true);
-                             jjtc000 = false;
-                           }
-/*@egen*/ {
+	ClassDeclaration() {
 		return jjtn000;
-	}/*@bgen(jjtree)*/
+	} <EOF>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -305,7 +322,7 @@ String Type()      : {Token type;} {
 	{ return type.image; }
 }
 
-void Statement()      : {} { 
+void Statement()      : {Token t;} { 
 	<CHAV_L> (Statement())* <CHAV_R>
 	|/*@bgen(jjtree) IfElseStatement */
           {
@@ -342,7 +359,12 @@ void Statement()      : {} {
             jjtree.openNodeScope(jjtn002);
           }
           try {
-/*@egen*/ (<WHILE> <PAR_L> Expression() <PAR_R> Statement())/*@bgen(jjtree)*/
+/*@egen*/ (<WHILE> try{
+			<PAR_L> Expression() <PAR_R>
+		} catch (ParseException e){
+			error_skipto(PAR_R);
+		}
+		 Statement())/*@bgen(jjtree)*/
           } catch (Throwable jjte002) {
             if (jjtc002) {
               jjtree.clearNodeScope(jjtn002);
@@ -362,7 +384,7 @@ void Statement()      : {} {
               jjtree.closeNodeScope(jjtn002, true);
             }
           }
-/*@egen*/               
+/*@egen*/                
 	| LOOKAHEAD(2) Expression() <SCOLON>
 	|/*@bgen(jjtree) #Assing(> 1) */
           {
