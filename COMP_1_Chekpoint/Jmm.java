@@ -27,6 +27,7 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@b
 
                         root.dump("");
                 } catch (Exception e){
+                        System.out.println(e.getMessage());
                         System.out.println("Sorry, we were not able to run your code, because we found one or more error trying to parse it.");
                 }
         }
