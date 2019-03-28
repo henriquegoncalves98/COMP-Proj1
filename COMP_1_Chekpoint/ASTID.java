@@ -3,6 +3,7 @@
 public
 class ASTID extends SimpleNode {
   private String name;
+  private String type = null;
 
   public ASTID(int id) {
     super(id);
@@ -21,11 +22,25 @@ class ASTID extends SimpleNode {
   }
 
   /**
+  * Set the param.
+  * @param n the name
+  * @param t the type
+  */
+  public void setParam(String n, String t) {
+    name = n;
+    type = t;
+  }
+
+
+  /**
    * {@inheritDoc}
    * @see org.javacc.examples.jjtree.eg2.SimpleNode#toString()
    */
   public String toString() {
-    return JmmTreeConstants.jjtNodeName[id] + " (" + name + ")";
+    if(type != null)
+      return JmmTreeConstants.jjtNodeName[id] + " " + type + "(" + name + ")";
+    else 
+      return JmmTreeConstants.jjtNodeName[id] + " (" + name + ")";
   }
 
 }

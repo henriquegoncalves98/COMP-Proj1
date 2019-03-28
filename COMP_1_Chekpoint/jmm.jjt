@@ -116,8 +116,8 @@ void ClassDeclaration(): { Token t;} {
 	<CHAV_R>
 }
 
-void ExtendClassDeclaration() #Extend: {} {
-	<EXT> ID()
+void ExtendClassDeclaration() #Extend: {Token t;} {
+	<EXT> t=<IDENTIFIER> { jjtThis.setName(t.image); }
 }
 
 void AuxClassDeclaration() #void: {} {
@@ -139,11 +139,22 @@ void MainDeclaration(): {} {
 	(Statement())* <CHAV_R>
 }
 
-void MethodDeclaration(): {Token t;} {
-	Type() t=<IDENTIFIER>{ jjtThis.setName(t.image); } <PAR_L>
-	[Type() <IDENTIFIER> (<VIRG> Type() <IDENTIFIER>)*] <PAR_R>
-	<CHAV_L> (LOOKAHEAD(2) VarDeclaration())* (Statement())* 
-	<RET> Expression() <SCOLON> <CHAV_R>
+void MethodDeclaration(): {Token t; String r;} {
+	(r=Type(){ jjtThis.setName(r); })#Ret t=<IDENTIFIER>{ jjtThis.setName(t.image); }
+	MethodParams()
+	(
+		<CHAV_L> (LOOKAHEAD(2) VarDeclaration())* (Statement())* 
+		(<RET> Expression() <SCOLON>)#Return <CHAV_R>
+	)#Body
+}
+
+void MethodParams() #Params: {Token t; String r;} {
+
+	<PAR_L> 
+	 [r=Type() ID1(r)
+	 (<VIRG> r=Type() ID1(r) )*
+	 ] 
+	<PAR_R>
 }
 
 String Type() #void: {Token type;} {
@@ -154,12 +165,14 @@ String Type() #void: {Token type;} {
 void Statement()#void : {Token t;} { 
 	<CHAV_L> (Statement())* <CHAV_R>
 	| (<IF> <PAR_L> Expression() <PAR_R> Statement() <ELSE> Statement())#IfElseStatement
-	| (<WHILE> try{
+	| (
+		<WHILE> try{
 			<PAR_L> Expression() <PAR_R>
 		} catch (ParseException e){
 			error_skipto(PAR_R);
 		}
-		 Statement())#WhileStatement 
+		 Statement()
+	   )#WhileStatement 
 	| LOOKAHEAD(2) Expression() <SCOLON>
 	| (ID() (<BRACKET_L> Expression() <BRACKET_R>)? StatementAux())#Assing(>1)
 	/*
@@ -256,6 +269,18 @@ void ID() :
   }
 }
 
+/** An Identifier that shows its type. */
+void ID1(String type) #ID:
+{
+  Token t;
+}
+{
+  t=<IDENTIFIER>
+  {
+	jjtThis.setParam(t.image,type);
+  }
+}
+
 /** An Integer. */
 void Integer() : {Token t;}
 {
@@ -266,63 +291,13 @@ void Integer() : {Token t;}
 }
 
 /** A Boolean. */
-void Bool() : {}
+void Bool() : {Token t;}
 {
-  <BOOL>
+  t=<BOOL>
+  {
+    jjtThis.setName(t.image);
+  }
 }
-
-
-/////////////////////////////////////////////////
-
-/*
-void Expression(): {} { 
-	<IDENTIFIER> ExpressionRecursive()
-	| ExpressionAux()
-}
-
-void ExpressionAux() #void: {} { 
-	(
-		<INTEGER>
-		| <BOOL> 
-		| <THIS>
-		| <NEW> ExpressionNew()
-		| <NOT> Expression()
-		| <PAR_L> Expression() <PAR_R>
-	) ExpressionRecursive()
-}
-
-void ExpressionNew() #New: {} { 
-	<INT> <BRACKET_L> Expression() <BRACKET_R>
-	| <IDENTIFIER> <PAR_L> <PAR_R>
-}	
-
-void ExpressionRecursive() #void: {} { 
-	ExpressionRecursiveAux()
-	| Empty()
-}
-
-void ExpressionRecursiveAux() #Expression: {} {
-	(
-		(<AND> | <LESSTHAN> | <ADDSUB_OP> | <ARITH_OP>) Expression()
-		| <BRACKET_L> Expression() <BRACKET_R>
-		| <PFINAL> (<LENGTH> | <IDENTIFIER> <PAR_L> [Expression() (<VIRG> Expression())*] <PAR_R>)
-	) ExpressionRecursive()
-}
-*/
-/* This second recursive functions are helpers for the statement non terminal symbol */
-/*
-void ExpressionRecursive2() #void: {} { 
-	ExpressionRecursiveAux2()
-	| Empty()
-}
-
-void ExpressionRecursiveAux2() #Expression: {} {
-	(
-		(<AND> | <LESSTHAN> | <ADDSUB_OP> | <ARITH_OP>) Expression()
-		| <PFINAL> (<LENGTH> | <IDENTIFIER> <PAR_L> [Expression() (<VIRG> Expression())*] <PAR_R>)
-	) ExpressionRecursive()
-}*/
-
 
 /* Epsilon terminal expressed as the non-terminal symbol empty*/
 void Empty() #void: {}
