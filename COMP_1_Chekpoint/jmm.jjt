@@ -15,10 +15,12 @@ import java.io.IOException;
 import java.util.*;
 
 public class Jmm {
+
+	static int errCounter = 0;
+
 	public static void main(String args[]) throws ParseException, IOException {
 
 		InputStream f = null;
-		int errCounter = 0;
 
 		try {
 						if(args.length == 0)

@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.util.*;
 
 public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@bgen(jjtree)*/
-  protected static JJTJmmState jjtree = new JJTJmmState();public static void main(String args[]) throws ParseException, IOException {
+  protected static JJTJmmState jjtree = new JJTJmmState();
+        static int errCounter = 0;
+
+        public static void main(String args[]) throws ParseException, IOException {
 
                 InputStream f = null;
 
@@ -39,12 +42,29 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants, JmmConstants {/*@b
      ASTerror_skipto jjtn000 = new ASTerror_skipto(JJTERROR_SKIPTO);
      boolean jjtc000 = true;
      jjtree.openNodeScope(jjtn000);
-     try {ParseException e = generateParseException();  // generate the exception object.
+     try {incErrCounter();
+        ParseException e = generateParseException();  // generate the exception object.
         System.out.println(e.getMessage());  // print the error message
         Token t;
         do {
                 t = getNextToken();
         } while (t.kind != kind);/*@bgen(jjtree)*/
+     } finally {
+       if (jjtc000) {
+         jjtree.closeNodeScope(jjtn000, true);
+       }
+     }
+  }
+
+  static void incErrCounter() throws ParseException {/*@bgen(jjtree) incErrCounter */
+     ASTincErrCounter jjtn000 = new ASTincErrCounter(JJTINCERRCOUNTER);
+     boolean jjtc000 = true;
+     jjtree.openNodeScope(jjtn000);
+     try {errCounter++;
+        if(errCounter >= 10){
+                System.out.println("You have 10 or more errors in your code, fix them before continuing.");
+                System.exit(1);
+        }/*@bgen(jjtree)*/
      } finally {
        if (jjtc000) {
          jjtree.closeNodeScope(jjtn000, true);
@@ -1184,6 +1204,31 @@ if (jjtc000) {
     finally { jj_save(2, xla); }
   }
 
+  static private boolean jj_3R_15()
+ {
+    if (jj_3R_19()) return true;
+    if (jj_scan_token(IDENTIFIER)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_16()
+ {
+    if (jj_scan_token(IDENTIFIER)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_1()
+ {
+    if (jj_3R_15()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_18()
+ {
+    if (jj_scan_token(EQ)) return true;
+    return false;
+  }
+
   static private boolean jj_3R_20()
  {
     if (jj_scan_token(INT)) return true;
@@ -1232,31 +1277,6 @@ if (jjtc000) {
   static private boolean jj_3R_17()
  {
     if (jj_scan_token(BRACKET_L)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_15()
- {
-    if (jj_3R_19()) return true;
-    if (jj_scan_token(IDENTIFIER)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_16()
- {
-    if (jj_scan_token(IDENTIFIER)) return true;
-    return false;
-  }
-
-  static private boolean jj_3_1()
- {
-    if (jj_3R_15()) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_18()
- {
-    if (jj_scan_token(EQ)) return true;
     return false;
   }
 
