@@ -81,8 +81,10 @@ SKIP:
 }
 TOKEN:{
 	< INTEGER: (["0" - "9"])+ >
-	| < ADDSUB_OP: "+" | "-">
-	| < ARITH_OP: "*" | "/" >
+	| < ADD_OP: "+">
+	| < SUB_OP: "-">
+	| < ARITH_MULT: "*" >
+	| < ARITH_DIV: "/" >
 	| < AND : "&&" >
 	| < BRACKET_R: "]" >
 	| < BRACKET_L: "[" >
@@ -643,7 +645,42 @@ void AddSubExpression()       : {Token t;}
   try {
 /*@egen*/
   (
-    MultiplicativeExpression() ( (t=<ADDSUB_OP> { jjtn001.setName(t.image); }) MultiplicativeExpression() )*
+    AddSubExpressionAux() ( (t=<SUB_OP> { jjtn001.setName(t.image); }) AddSubExpressionAux() )*
+  )/*@bgen(jjtree)*/
+  } catch (Throwable jjte001) {
+    if (jjtc001) {
+      jjtree.clearNodeScope(jjtn001);
+      jjtc001 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte001 instanceof RuntimeException) {
+      throw (RuntimeException)jjte001;
+    }
+    if (jjte001 instanceof ParseException) {
+      throw (ParseException)jjte001;
+    }
+    throw (Error)jjte001;
+  } finally {
+    if (jjtc001) {
+      jjtree.closeNodeScope(jjtn001, jjtree.nodeArity() > 1);
+    }
+  }
+/*@egen*/              
+}
+
+/** An AddSubAux Expression. */
+void AddSubExpressionAux()       : {Token t;}
+{/*@bgen(jjtree) #Additive(> 1) */
+  {
+    ASTAdditive jjtn001 = new ASTAdditive(JJTADDITIVE);
+    boolean jjtc001 = true;
+    jjtree.openNodeScope(jjtn001);
+  }
+  try {
+/*@egen*/
+  (
+    MultiplicativeExpression() ( (t=<ADD_OP> { jjtn001.setName(t.image); }) MultiplicativeExpression() )*
   )/*@bgen(jjtree)*/
   } catch (Throwable jjte001) {
     if (jjtc001) {
@@ -678,7 +715,42 @@ void MultiplicativeExpression()       : {Token t;}
   try {
 /*@egen*/
   (
-    AccessExpression() ( (t=<ARITH_OP> { jjtn001.setName(t.image); }) AccessExpression() )*
+    MultiplicativeExpressionAux() ( (t=<ARITH_DIV> { jjtn001.setName(t.image); }) MultiplicativeExpressionAux() )*
+  )/*@bgen(jjtree)*/
+  } catch (Throwable jjte001) {
+    if (jjtc001) {
+      jjtree.clearNodeScope(jjtn001);
+      jjtc001 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte001 instanceof RuntimeException) {
+      throw (RuntimeException)jjte001;
+    }
+    if (jjte001 instanceof ParseException) {
+      throw (ParseException)jjte001;
+    }
+    throw (Error)jjte001;
+  } finally {
+    if (jjtc001) {
+      jjtree.closeNodeScope(jjtn001, jjtree.nodeArity() > 1);
+    }
+  }
+/*@egen*/                    
+}
+
+/** A MultiplicativeAux Expression. */
+void MultiplicativeExpressionAux()       : {Token t;}
+{/*@bgen(jjtree) #Multiplicative(> 1) */
+  {
+    ASTMultiplicative jjtn001 = new ASTMultiplicative(JJTMULTIPLICATIVE);
+    boolean jjtc001 = true;
+    jjtree.openNodeScope(jjtn001);
+  }
+  try {
+/*@egen*/
+  (
+    AccessExpression() ( (t=<ARITH_MULT> { jjtn001.setName(t.image); }) AccessExpression() )*
   )/*@bgen(jjtree)*/
   } catch (Throwable jjte001) {
     if (jjtc001) {

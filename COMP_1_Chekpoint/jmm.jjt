@@ -66,8 +66,10 @@ SKIP:
 }
 TOKEN:{
 	< INTEGER: (["0" - "9"])+ >
-	| < ADDSUB_OP: "+" | "-">
-	| < ARITH_OP: "*" | "/" >
+	| < ADD_OP: "+">
+	| < SUB_OP: "-">
+	| < ARITH_MULT: "*" >
+	| < ARITH_DIV: "/" >
 	| < AND : "&&" >
 	| < BRACKET_R: "]" >
 	| < BRACKET_L: "[" >
@@ -227,7 +229,15 @@ void LessThanExpression() #void : {}
 void AddSubExpression() #void : {Token t;}
 {
   (
-    MultiplicativeExpression() ( (t=<ADDSUB_OP> { jjtThis.setName(t.image); }) MultiplicativeExpression() )*
+    AddSubExpressionAux() ( (t=<SUB_OP> { jjtThis.setName(t.image); }) AddSubExpressionAux() )*
+  ) #Additive(>1)
+}
+
+/** An AddSubAux Expression. */
+void AddSubExpressionAux() #void : {Token t;}
+{
+  (
+    MultiplicativeExpression() ( (t=<ADD_OP> { jjtThis.setName(t.image); }) MultiplicativeExpression() )*
   ) #Additive(>1)
 }
 
@@ -235,7 +245,15 @@ void AddSubExpression() #void : {Token t;}
 void MultiplicativeExpression() #void : {Token t;}
 {
   (
-    AccessExpression() ( (t=<ARITH_OP> { jjtThis.setName(t.image); }) AccessExpression() )*
+    MultiplicativeExpressionAux() ( (t=<ARITH_DIV> { jjtThis.setName(t.image); }) MultiplicativeExpressionAux() )*
+  ) #Multiplicative(>1)
+}
+
+/** A MultiplicativeAux Expression. */
+void MultiplicativeExpressionAux() #void : {Token t;}
+{
+  (
+    AccessExpression() ( (t=<ARITH_MULT> { jjtThis.setName(t.image); }) AccessExpression() )*
   ) #Multiplicative(>1)
 }
 
