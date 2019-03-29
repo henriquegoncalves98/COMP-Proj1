@@ -183,8 +183,8 @@ void MethodParams() #Params: {Token t; String r;} {
 }
 
 /** A Type that returns as string the type token image. */
-String Type() #void: {Token type;} {
-	((type=<INT> (<BRACKET_L> <BRACKET_R>)?)| type=<BOOLEAN> | type=<IDENTIFIER>)
+String Type() #void: {Token type; } {
+	((type=<INT> (type=<BRACKET_L> <BRACKET_R>{ return "int[]"; })?)| type=<BOOLEAN> | type=<IDENTIFIER>)
 	{ return type.image; }
 }
 

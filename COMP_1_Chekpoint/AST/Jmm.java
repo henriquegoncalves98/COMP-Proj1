@@ -519,8 +519,9 @@ if (jjtc000) {
       type = jj_consume_token(INT);
       switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
       case BRACKET_L:{
-        jj_consume_token(BRACKET_L);
+        type = jj_consume_token(BRACKET_L);
         jj_consume_token(BRACKET_R);
+{if ("" != null) return "int[]";}
         break;
         }
       default:
