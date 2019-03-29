@@ -2,35 +2,37 @@
 public interface JmmTreeConstants
 {
   public int JJTERROR_SKIPTO = 0;
-  public int JJTPROGRAM = 1;
-  public int JJTCLASSDECLARATION = 2;
-  public int JJTEXTEND = 3;
-  public int JJTVOID = 4;
-  public int JJTVARDECLARATION = 5;
-  public int JJTMAINDECLARATION = 6;
-  public int JJTMETHODDECLARATION = 7;
-  public int JJTRET = 8;
-  public int JJTRETURN = 9;
-  public int JJTBODY = 10;
-  public int JJTPARAMS = 11;
-  public int JJTIFELSESTATEMENT = 12;
-  public int JJTWHILESTATEMENT = 13;
-  public int JJTASSING = 14;
-  public int JJTAND = 15;
-  public int JJTLESSTHAN = 16;
-  public int JJTADDITIVE = 17;
-  public int JJTMULTIPLICATIVE = 18;
-  public int JJTEXPRESSION = 19;
-  public int JJTACCESSEXPR = 20;
-  public int JJTTHIS = 21;
-  public int JJTNEWEXPR = 22;
-  public int JJTID = 23;
-  public int JJTINTEGER = 24;
-  public int JJTBOOL = 25;
+  public int JJTINCERRCOUNTER = 1;
+  public int JJTPROGRAM = 2;
+  public int JJTCLASSDECLARATION = 3;
+  public int JJTEXTEND = 4;
+  public int JJTVOID = 5;
+  public int JJTVARDECLARATION = 6;
+  public int JJTMAINDECLARATION = 7;
+  public int JJTMETHODDECLARATION = 8;
+  public int JJTRET = 9;
+  public int JJTRETURN = 10;
+  public int JJTBODY = 11;
+  public int JJTPARAMS = 12;
+  public int JJTIFELSESTATEMENT = 13;
+  public int JJTWHILESTATEMENT = 14;
+  public int JJTASSING = 15;
+  public int JJTAND = 16;
+  public int JJTLESSTHAN = 17;
+  public int JJTADDITIVE = 18;
+  public int JJTMULTIPLICATIVE = 19;
+  public int JJTEXPRESSION = 20;
+  public int JJTACCESSEXPR = 21;
+  public int JJTTHIS = 22;
+  public int JJTNEWEXPR = 23;
+  public int JJTID = 24;
+  public int JJTINTEGER = 25;
+  public int JJTBOOL = 26;
 
 
   public String[] jjtNodeName = {
     "error_skipto",
+    "incErrCounter",
     "Program",
     "ClassDeclaration",
     "Extend",
@@ -58,4 +60,4 @@ public interface JmmTreeConstants
     "Bool",
   };
 }
-/* JavaCC - OriginalChecksum=32db5139ca60e675a2a559c61a8ea23d (do not edit this line) */
+/* JavaCC - OriginalChecksum=67c5a29dd2ceef7b42a56793debc1c43 (do not edit this line) */

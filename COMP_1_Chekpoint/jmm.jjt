@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.util.*;
 
 public class Jmm {
+
+	static int errCounter = 0;
+
 	public static void main(String args[]) throws ParseException, IOException {
 
 		InputStream f = null;
@@ -46,6 +49,7 @@ PARSER_END(Jmm)
 
 JAVACODE
 void error_skipto(int kind) {
+	incErrCounter();
 	ParseException e = generateParseException();  // generate the exception object.
 	System.out.println(e.getMessage());  // print the error message
 	Token t;
@@ -53,6 +57,15 @@ void error_skipto(int kind) {
 		t = getNextToken();
 	} while (t.kind != kind);
 
+}
+
+JAVACODE
+void incErrCounter(){
+	errCounter++;
+	if(errCounter >= 10){
+		System.out.println("You have 10 or more errors in your code, fix them before continuing.");
+		System.exit(1);
+	}
 }
 
 SKIP:

@@ -19,6 +19,9 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants/*@egen*/ {/*@bgen(j
   protected static JJTJmmState jjtree = new JJTJmmState();
 
 /*@egen*/
+
+	static int errCounter = 0;
+
 	public static void main(String args[]) throws ParseException, IOException {
 
 		InputStream f = null;
@@ -55,6 +58,7 @@ void error_skipto(int kind) {/*@bgen(jjtree) error_skipto */
      jjtree.openNodeScope(jjtn000);
      try {
 /*@egen*/
+	incErrCounter();
 	ParseException e = generateParseException();  // generate the exception object.
 	System.out.println(e.getMessage());  // print the error message
 	Token t;
@@ -68,6 +72,26 @@ void error_skipto(int kind) {/*@bgen(jjtree) error_skipto */
      }
 /*@egen*/
 
+}
+
+JAVACODE
+void incErrCounter(){/*@bgen(jjtree) incErrCounter */
+     ASTincErrCounter jjtn000 = new ASTincErrCounter(JJTINCERRCOUNTER);
+     boolean jjtc000 = true;
+     jjtree.openNodeScope(jjtn000);
+     try {
+/*@egen*/
+	errCounter++;
+	if(errCounter >= 10){
+		System.out.println("You have 10 or more errors in your code, fix them before continuing.");
+		System.exit(1);
+	}/*@bgen(jjtree)*/
+     } finally {
+       if (jjtc000) {
+         jjtree.closeNodeScope(jjtn000, true);
+       }
+     }
+/*@egen*/
 }
 
 SKIP:
