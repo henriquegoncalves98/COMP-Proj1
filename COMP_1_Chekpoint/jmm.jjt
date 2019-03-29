@@ -1,6 +1,7 @@
 options {
  LOOKAHEAD = 1;
  MULTI = true;
+ JJTREE_OUTPUT_DIRECTORY = "AST";
 }
 
 PARSER_BEGIN(Jmm)
@@ -19,7 +20,10 @@ public class Jmm {
 		InputStream f = null;
 
 		try {
-            f = new FileInputStream("teste.jmm");
+						if(args.length == 0)
+            	f = new FileInputStream("../teste.jmm");
+						else 
+							f = new FileInputStream("../" + args[0]);
         }catch(FileNotFoundException e) {
 			System.out.println("Error opening file:");
             System.out.println(e.getMessage());
@@ -103,6 +107,7 @@ SimpleNode Program(): {} {
 	} <EOF>
 }
 
+/** A Class declaration. */
 void ClassDeclaration(): { Token t;} {
 	try{
 		<CLASS> 
@@ -116,6 +121,7 @@ void ClassDeclaration(): { Token t;} {
 	<CHAV_R>
 }
 
+/** An extended class. */
 void ExtendClassDeclaration() #Extend: {Token t;} {
 	<EXT> t=<IDENTIFIER> { jjtThis.setName(t.image); }
 }
@@ -124,6 +130,7 @@ void AuxClassDeclaration() #void: {} {
 	( <PUBLIC> (MainDeclaration() | MethodDeclaration()) )*
 }
 
+/** A Variable declaration. */
 void VarDeclaration(): {Token t; String type;} {
 	try{
 	type=Type() t=<IDENTIFIER>{ jjtThis.setName(t.image); jjtThis.setType(type); } <SCOLON>
@@ -132,6 +139,7 @@ void VarDeclaration(): {Token t; String type;} {
 	}
 }
 
+/** The main method. */
 void MainDeclaration(): {} {
 	<STATIC> <VOID> <MAIN> <PAR_L> 
 	<STR> <BRACKET_L> <BRACKET_R> <IDENTIFIER> <PAR_R>
@@ -139,6 +147,7 @@ void MainDeclaration(): {} {
 	(Statement())* <CHAV_R>
 }
 
+/** A Method. */
 void MethodDeclaration(): {Token t; String r;} {
 	(r=Type(){ jjtThis.setName(r); })#Ret t=<IDENTIFIER>{ jjtThis.setName(t.image); }
 	MethodParams()
@@ -148,6 +157,7 @@ void MethodDeclaration(): {Token t; String r;} {
 	)#Body
 }
 
+/** Method non-terminal auxiliar for its parameters. */
 void MethodParams() #Params: {Token t; String r;} {
 
 	<PAR_L> 
@@ -157,11 +167,13 @@ void MethodParams() #Params: {Token t; String r;} {
 	<PAR_R>
 }
 
+/** A Type that returns as string the type token image. */
 String Type() #void: {Token type;} {
 	((type=<INT> (<BRACKET_L> <BRACKET_R>)?)| type=<BOOLEAN> | type=<IDENTIFIER>)
 	{ return type.image; }
 }
 
+/** A Statement. */
 void Statement()#void : {Token t;} { 
 	<CHAV_L> (Statement())* <CHAV_R>
 	| (<IF> <PAR_L> Expression() <PAR_R> Statement() <ELSE> Statement())#IfElseStatement
@@ -173,8 +185,8 @@ void Statement()#void : {Token t;} {
 		}
 		 Statement()
 	   )#WhileStatement 
-	| LOOKAHEAD(2) Expression() <SCOLON>
-	| (ID() (<BRACKET_L> Expression() <BRACKET_R>)? StatementAux())#Assing(>1)
+	| LOOKAHEAD(2)(ID() (<BRACKET_L> Expression() <BRACKET_R>)? StatementAux())#Assing(>1)
+	| Expression() <SCOLON>
 	/*
 	| Expression() <SCOLON>
 	| <IDENTIFIER> StatementAux()
@@ -244,17 +256,17 @@ void AccessExpression()#void: {}
 void UnaryExpression() #void : {}
 {
    <PAR_L> Expression() <PAR_R>
-    | <NOT> UnaryExpression()
+  | <NOT> UnaryExpression()
 	| <NEW> ExpressionNew()
-	| <THIS>
+	| (<THIS>)#This
 	| ID()
 	| Bool()
 	| Integer()
 }
 
-void ExpressionNew() #void: {} { 
+void ExpressionNew() #NewExpr: {} { 
 	<INT> <BRACKET_L> Expression() <BRACKET_R>
-	| <IDENTIFIER> <PAR_L> <PAR_R>
+	| ID() <PAR_L> <PAR_R>
 }	
 
 /** An Identifier. */

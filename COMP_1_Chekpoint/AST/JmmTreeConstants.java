@@ -22,9 +22,11 @@ public interface JmmTreeConstants
   public int JJTMULTIPLICATIVE = 18;
   public int JJTEXPRESSION = 19;
   public int JJTACCESSEXPR = 20;
-  public int JJTID = 21;
-  public int JJTINTEGER = 22;
-  public int JJTBOOL = 23;
+  public int JJTTHIS = 21;
+  public int JJTNEWEXPR = 22;
+  public int JJTID = 23;
+  public int JJTINTEGER = 24;
+  public int JJTBOOL = 25;
 
 
   public String[] jjtNodeName = {
@@ -49,9 +51,11 @@ public interface JmmTreeConstants
     "Multiplicative",
     "Expression",
     "AccessExpr",
+    "This",
+    "NewExpr",
     "ID",
     "Integer",
     "Bool",
   };
 }
-/* JavaCC - OriginalChecksum=b020decc9685b2c77bb0ab4db511608a (do not edit this line) */
+/* JavaCC - OriginalChecksum=32db5139ca60e675a2a559c61a8ea23d (do not edit this line) */

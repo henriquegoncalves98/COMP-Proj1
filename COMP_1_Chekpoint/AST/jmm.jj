@@ -2,6 +2,7 @@
 /*@egen*/options {
  LOOKAHEAD = 1;
               
+                                 
 }
 
 PARSER_BEGIN(Jmm)
@@ -23,7 +24,10 @@ public class Jmm/*@bgen(jjtree)*/implements JmmTreeConstants/*@egen*/ {/*@bgen(j
 		InputStream f = null;
 
 		try {
-            f = new FileInputStream("teste.jmm");
+						if(args.length == 0)
+            	f = new FileInputStream("../teste.jmm");
+						else 
+							f = new FileInputStream("../" + args[0]);
         }catch(FileNotFoundException e) {
 			System.out.println("Error opening file:");
             System.out.println(e.getMessage());
@@ -144,6 +148,7 @@ SimpleNode Program(): {/*@bgen(jjtree) Program */
 /*@egen*/
 }
 
+/** A Class declaration. */
 void ClassDeclaration(): {/*@bgen(jjtree) ClassDeclaration */
                            ASTClassDeclaration jjtn000 = new ASTClassDeclaration(JJTCLASSDECLARATION);
                            boolean jjtc000 = true;
@@ -183,6 +188,7 @@ void ClassDeclaration(): {/*@bgen(jjtree) ClassDeclaration */
 /*@egen*/
 }
 
+/** An extended class. */
 void ExtendClassDeclaration()        : {/*@bgen(jjtree) Extend */
                                         ASTExtend jjtn000 = new ASTExtend(JJTEXTEND);
                                         boolean jjtc000 = true;
@@ -208,6 +214,7 @@ void AuxClassDeclaration()      : {} {
 	( <PUBLIC> (MainDeclaration() | MethodDeclaration()) )*
 }
 
+/** A Variable declaration. */
 void VarDeclaration(): {/*@bgen(jjtree) VarDeclaration */
                         ASTVarDeclaration jjtn000 = new ASTVarDeclaration(JJTVARDECLARATION);
                         boolean jjtc000 = true;
@@ -242,6 +249,7 @@ void VarDeclaration(): {/*@bgen(jjtree) VarDeclaration */
 /*@egen*/
 }
 
+/** The main method. */
 void MainDeclaration(): {/*@bgen(jjtree) MainDeclaration */
   ASTMainDeclaration jjtn000 = new ASTMainDeclaration(JJTMAINDECLARATION);
   boolean jjtc000 = true;
@@ -275,6 +283,7 @@ void MainDeclaration(): {/*@bgen(jjtree) MainDeclaration */
 /*@egen*/
 }
 
+/** A Method. */
 void MethodDeclaration(): {/*@bgen(jjtree) MethodDeclaration */
                            ASTMethodDeclaration jjtn000 = new ASTMethodDeclaration(JJTMETHODDECLARATION);
                            boolean jjtc000 = true;
@@ -396,6 +405,7 @@ void MethodDeclaration(): {/*@bgen(jjtree) MethodDeclaration */
 /*@egen*/
 }
 
+/** Method non-terminal auxiliar for its parameters. */
 void MethodParams()        : {/*@bgen(jjtree) Params */
                               ASTParams jjtn000 = new ASTParams(JJTPARAMS);
                               boolean jjtc000 = true;
@@ -431,11 +441,13 @@ void MethodParams()        : {/*@bgen(jjtree) Params */
 /*@egen*/
 }
 
+/** A Type that returns as string the type token image. */
 String Type()      : {Token type;} {
 	((type=<INT> (<BRACKET_L> <BRACKET_R>)?)| type=<BOOLEAN> | type=<IDENTIFIER>)
 	{ return type.image; }
 }
 
+/** A Statement. */
 void Statement()      : {Token t;} { 
 	<CHAV_L> (Statement())* <CHAV_R>
 	|/*@bgen(jjtree) IfElseStatement */
@@ -501,35 +513,35 @@ void Statement()      : {Token t;} {
             }
           }
 /*@egen*/                
-	| LOOKAHEAD(2) Expression() <SCOLON>
-	|/*@bgen(jjtree) #Assing(> 1) */
-          {
-            ASTAssing jjtn003 = new ASTAssing(JJTASSING);
-            boolean jjtc003 = true;
-            jjtree.openNodeScope(jjtn003);
-          }
-          try {
-/*@egen*/ (ID() (<BRACKET_L> Expression() <BRACKET_R>)? StatementAux())/*@bgen(jjtree)*/
-          } catch (Throwable jjte003) {
-            if (jjtc003) {
-              jjtree.clearNodeScope(jjtn003);
-              jjtc003 = false;
-            } else {
-              jjtree.popNode();
-            }
-            if (jjte003 instanceof RuntimeException) {
-              throw (RuntimeException)jjte003;
-            }
-            if (jjte003 instanceof ParseException) {
-              throw (ParseException)jjte003;
-            }
-            throw (Error)jjte003;
-          } finally {
-            if (jjtc003) {
-              jjtree.closeNodeScope(jjtn003, jjtree.nodeArity() > 1);
-            }
-          }
+	| LOOKAHEAD(2)/*@bgen(jjtree) #Assing(> 1) */
+                      {
+                        ASTAssing jjtn003 = new ASTAssing(JJTASSING);
+                        boolean jjtc003 = true;
+                        jjtree.openNodeScope(jjtn003);
+                      }
+                      try {
+/*@egen*/(ID() (<BRACKET_L> Expression() <BRACKET_R>)? StatementAux())/*@bgen(jjtree)*/
+                      } catch (Throwable jjte003) {
+                        if (jjtc003) {
+                          jjtree.clearNodeScope(jjtn003);
+                          jjtc003 = false;
+                        } else {
+                          jjtree.popNode();
+                        }
+                        if (jjte003 instanceof RuntimeException) {
+                          throw (RuntimeException)jjte003;
+                        }
+                        if (jjte003 instanceof ParseException) {
+                          throw (ParseException)jjte003;
+                        }
+                        throw (Error)jjte003;
+                      } finally {
+                        if (jjtc003) {
+                          jjtree.closeNodeScope(jjtn003, jjtree.nodeArity() > 1);
+                        }
+                      }
 /*@egen*/           
+	| Expression() <SCOLON>
 	/*
 	| Expression() <SCOLON>
 	| <IDENTIFIER> StatementAux()
@@ -761,17 +773,56 @@ void AccessExpression()     : {}
 void UnaryExpression()       : {}
 {
    <PAR_L> Expression() <PAR_R>
-    | <NOT> UnaryExpression()
+  | <NOT> UnaryExpression()
 	| <NEW> ExpressionNew()
-	| <THIS>
+	|/*@bgen(jjtree) This */
+          {
+            ASTThis jjtn001 = new ASTThis(JJTTHIS);
+            boolean jjtc001 = true;
+            jjtree.openNodeScope(jjtn001);
+          }
+          try {
+/*@egen*/ (<THIS>)/*@bgen(jjtree)*/
+          } finally {
+            if (jjtc001) {
+              jjtree.closeNodeScope(jjtn001, true);
+            }
+          }
+/*@egen*/     
 	| ID()
 	| Bool()
 	| Integer()
 }
 
-void ExpressionNew()      : {} { 
+void ExpressionNew()         : {/*@bgen(jjtree) NewExpr */
+  ASTNewExpr jjtn000 = new ASTNewExpr(JJTNEWEXPR);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/} {/*@bgen(jjtree) NewExpr */
+        try {
+/*@egen*/ 
 	<INT> <BRACKET_L> Expression() <BRACKET_R>
-	| <IDENTIFIER> <PAR_L> <PAR_R>
+	| ID() <PAR_L> <PAR_R>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
 }	
 
 /** An Identifier. */
