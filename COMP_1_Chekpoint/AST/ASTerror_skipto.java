@@ -10,5 +10,13 @@ class ASTerror_skipto extends SimpleNode {
     super(p, id);
   }
 
+  /**
+  * {@inheritDoc}
+  * @see org.javacc.examples.jjtree.eg2.SimpleNode#toString()
+  */
+  public String toString() {
+    return "Error_Parsing";
+  }
+
 }
 /* JavaCC - OriginalChecksum=e7f5bab65e899b4a8f8b1a8bd4ac18fe (do not edit this line) */

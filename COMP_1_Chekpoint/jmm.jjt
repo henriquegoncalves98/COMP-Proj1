@@ -202,13 +202,6 @@ void Statement()#void : {Token t;} {
 	   )#WhileStatement 
 	| LOOKAHEAD(2)(ID() (<BRACKET_L> Expression() <BRACKET_R>)? StatementAux())#Assing(>1)
 	| Expression() <SCOLON>
-	/*
-	| Expression() <SCOLON>
-	| <IDENTIFIER> StatementAux()
-	
-	| (ExpressionAux() #Expression) <SCOLON>
-	| <IDENTIFIER> (<BRACKET_L> Expression() <BRACKET_R>)? ( StatementAux() | (ExpressionRecursive2() <SCOLON>))
-	*/
 }
 
 void StatementAux() #void: {} {

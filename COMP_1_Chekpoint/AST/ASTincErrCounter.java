@@ -10,5 +10,13 @@ class ASTincErrCounter extends SimpleNode {
     super(p, id);
   }
 
+  /**
+  * {@inheritDoc}
+  * @see org.javacc.examples.jjtree.eg2.SimpleNode#toString()
+  */
+  public String toString() {
+    return "Error_Parsing";
+  }
+
 }
 /* JavaCC - OriginalChecksum=bf2fa23372302de071c2217a59c7960f (do not edit this line) */
